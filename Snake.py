@@ -1,6 +1,7 @@
 import pygame as pg
 import sys
 import random
+import time
 
 pg.init()
 
@@ -106,24 +107,30 @@ def PlayGame():
 
     apple = Apple()
 
+    input_cooldown = 0.01
+    last_input_time = time.time()
+
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 pg.quit()
                 sys.exit()
             if event.type == pg.KEYDOWN:
-                if event.key == pg.K_DOWN and snake.ydir != -1:
-                    snake.ydir = 1
-                    snake.xdir = 0
-                elif event.key == pg.K_UP and snake.ydir != 1:
-                    snake.ydir = -1
-                    snake.xdir = 0
-                elif event.key == pg.K_RIGHT and snake.xdir != -1:
-                    snake.ydir = 0
-                    snake.xdir = 1
-                elif event.key == pg.K_LEFT and snake.xdir != 1:
-                    snake.ydir = 0
-                    snake.xdir = -1
+                current_time = time.time()
+                if current_time - last_input_time > input_cooldown:
+                    if event.key == pg.K_DOWN and snake.ydir != -1:
+                        snake.ydir = 1
+                        snake.xdir = 0
+                    elif event.key == pg.K_UP and snake.ydir != 1:
+                        snake.ydir = -1
+                        snake.xdir = 0
+                    elif event.key == pg.K_RIGHT and snake.xdir != -1:
+                        snake.ydir = 0
+                        snake.xdir = 1
+                    elif event.key == pg.K_LEFT and snake.xdir != 1:
+                        snake.ydir = 0
+                        snake.xdir = -1
+                    last_input_time = current_time
 
         snake.update()
         screen.fill('black')
