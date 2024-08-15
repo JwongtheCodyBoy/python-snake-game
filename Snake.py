@@ -25,7 +25,6 @@ class Snake:
     
     def update(self):
         self.checkDeath()
-        global apple
 
         if self.dead:
             menu()
